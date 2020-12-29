@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="fragments/sidebar :: common-css-admin">
+    <meta name="csrf-token" content="{{csrf_token()}}"/>
+
+</head>
+
+<body id="page-top">
+
+<div id="wrapper">
+
+    <div th:replace="fragments/sidebar :: side-bar"></div>
+
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <div id="content">
+
+            <div th:replace="fragments/topbar :: top-bar"></div>
+
+            <div class="container-fluid">
+                <h1 class="h3 mb-2 text-gray-800">Quản lý người dùng</h1>
+
+            </div>
+        </div>
+
+        <div th:replace="fragments/footer :: footer"></div>
+
+    </div>
+
+</div>
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+
+<div th:replace="fragments/sidebar :: sidebar-js"></div>
+<script th:src="@{~/js/common.js}"></script>
+
+<script th:src="@{~/js/datatables/jquery.dataTables.min.js}"></script>
+<script th:src="@{~/js/datatables/dataTables.bootstrap4.min.js}"></script>
+
+<script type="text/javascript" src="../static/js/demo/datatables-demo.js"
+        th:src="@{~/js/demo/datatables-demo.js}"></script>
+</body>
+
+</html>

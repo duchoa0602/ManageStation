@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head th:fragment="common-css-admin">
+    <meta charset="UTF-8">
+    <meta name="description" content="Yoga Studio Template">
+    <meta name="keywords" content="Yoga, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Admin</title>
+
+    <!-- Custom fonts for this template-->
+    <link rel="stylesheet" th:href="@{~/css/admin/all.min.css}">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+          rel="stylesheet" type="text/css">
+
+    <!-- Custom styles for this template-->
+    <link th:href="@{~/css/sb-admin-2.min.css}" rel="stylesheet" type="text/css">
+
+    <!-- Custom styles for this page -->
+    <link th:href="@{~/css/dataTables.bootstrap4.min.css}" rel="stylesheet" type="text/css">
+
+
+</head>
+
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<!--<div id="wrapper">-->
+<div th:fragment="side-bar">
+
+
+    <!-- Sidebar -->
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+        <!-- Sidebar - Brand -->
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/home}">
+            <div class="sidebar-brand-icon rotate-n-15">
+                <i class="fas fa-laugh-wink"></i>
+            </div>
+            <div class="sidebar-brand-text mx-3">Manage Station<sup></sup></div>
+        </a>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider my-0">
+
+        <!-- Nav Item - Dashboard -->
+        <li class="nav-item active">
+            <a class="nav-link" th:href="@{~/home}">
+                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <span>Trang chủ</span></a>
+        </li>
+
+        <!-- Role Admin  -->
+        <div sec:authorize="hasRole('ROLE_ADMIN')">
+            <hr class="sidebar-divider">
+            <div class="sidebar-heading">
+                Nhân viên quản lý
+            </div>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{~/admin/manage-users}">
+                    <i class="fas fa-fw fa-folder"></i>
+                    <span>Quản lý người dùng</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{~/admin/manage-request}">
+                    <i class="fas fa-fw fa-folder"></i>
+                    <span>Quản lý yêu cầu</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{~/admin/report}">
+                    <i class="fas fa-fw fa-folder"></i>
+                    <span>Báo cáo</span></a>
+            </li>
+        </div>
+        <hr class="sidebar-divider">
+
+        <!-- Role User -->
+        <div sec:authorize="hasRole('ROLE_USER')">
+            <div class="sidebar-heading">
+                Người dùng
+            </div>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{~/user/monitor}">
+                    <i class="fas fa-fw fa-folder"></i>
+                    <span>Theo dõi</span></a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{~/user/manage-station}">
+                    <i class="fas fa-fw fa-folder"></i>
+                    <span>Quản lý trạm</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{~/user/report}">
+                    <i class="fas fa-fw fa-folder"></i>
+                    <span>Báo cáo</span></a>
+            </li>
+            <hr class="sidebar-divider d-none d-md-block">
+        </div>
+    </ul>
+    <!-- End of Sidebar -->
+</div>
+<!-- End of Page Wrapper -->
+
+<div th:fragment="sidebar-js">
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script th:src="@{~/js/jquery/jquery.min.js}"></script>
+    <script th:src="@{~/js/bootstrap/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{~/js/jquery-easing/jquery.easing.min.js}"></script>
+    <script th:src="@{~/js/sb-admin-2.min.js}"></script>
+    <script th:src="@{~/js/Chart.min.js}"></script>
+</div>
+
+
+</body>
+
+</html>
