@@ -36,4 +36,10 @@ public class DeviceEntity implements Serializable {
 
     @Column(name = "unit", nullable = false)
     private String unit; //đơn vị đo
+
+    @Column(name = "low_value", nullable = false)
+    private Double lowValue; //ngưỡng thấp
+
+    @Column(name = "high_value", nullable = false)
+    private Double highValue; //ngưỡng cao
 }
