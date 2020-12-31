@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+>
+
+<head th:include="fragments/sidebar :: common-css-admin">
+</head>
+
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <!-- Sidebar -->
+    <div th:replace="fragments/sidebar :: side-bar"></div>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Bắt đầu nội dung trang -->
+        <div id="content">
+
+            <!-- Topbar -->
+            <div th:replace="fragments/topbar :: top-bar"></div>
+            <!-- End of Topbar -->
+
+            <!-- Bắt đầu bảng phân quyền -->
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <h1 class="h3 mb-2 text-gray-800">Danh sách người dùng hệ thống</h1>
+                <div class="card shadow mb-4">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <div style="margin-bottom: 20px;">
+                                    <button class="btn btn-primary newBtn"
+                                            data-toggle="modal"
+                                            data-target="#addUserModal">
+                                        <i class="fas fa-plus-circle"></i> Thêm mới
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                <tr>
+                                    <th style="width: 5%;">STT</th>
+                                    <th>Họ và tên</th>
+                                    <th>Tài khoản</th>
+                                    <th>SĐT</th>
+                                    <th>Email</th>
+                                    <th>Địa chỉ</th>
+                                    <th>Vai trò</th>
+                                    <th style="width: 15%;">Hành động</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <th:block th:each="u,i:${allUserRoles}">
+                                    <tr>
+                                        <form class="form-horizontal" th:method="post"
+                                              th:action="@{/admin/manage-users/update(userId=${u.id.userId})}"
+                                              th:object="${roleIdChangeSelected}" method="post">
+                                            <td th:text="${i.count}"></td>
+                                            <td th:text="${u.user.fullName}"></td>
+                                            <td th:text="${u.user.username}"></td>
+                                            <td th:text="${u.user.phoneNumber}"></td>
+                                            <td th:text="${u.user.email}"></td>
+                                            <td th:text="${u.user.address}"></td>
+                                            <td>
+                                                <select name="roleIdChangeSelected" class="form-control">
+                                                    <option th:each="role : ${roles}"
+                                                            th:text="${role.name}" th:value="${role.id}"
+                                                            th:selected="${u.role.id == role.id}">
+                                                    </option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <button type="submit" class="btn btn-warning">Sửa</button>
+                                                
+                                                <a th:href="@{/admin/manage-users/delete/(userId=${u.id.userId})}"
+                                                   id="btnDeleteProfileButtonRow" name="btnDeleteProfileButtonRow"
+                                                   class="btn btn-danger">Xóa</a>
+                                            </td>
+                                        </form>
+                                    </tr>
+                                </th:block>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog"
+                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <form action="#" th:action="@{/admin/manage-users/new}" method="post">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Thêm mới người dùng</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label for="addUser-fullName" class="col-form-label">Họ và tên:</label>
+                                        <input type="text" required class="form-control"
+                                               id="addUser-fullName" name="fullName">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addUser-phoneNumber" class="col-form-label">Số điện thoại:</label>
+                                        <input type="text" required class="form-control" id="addUser-phoneNumber"
+                                               name="phoneNumber">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addUser-email" class="col-form-label">Email:</label>
+                                        <input type="text" required class="form-control" id="addUser-email"
+                                               name="email">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addUser-address" class="col-form-label">Địa chỉ:</label>
+                                        <input type="text" required class="form-control" id="addUser-address"
+                                               name="address">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addUser-username" class="col-form-label">Tên tài khoản:</label>
+                                        <input type="text" required class="form-control" id="addUser-username"
+                                               name="username">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addUser-password" class="col-form-label">Mật khẩu:</label>
+                                        <input type="password" required class="form-control" id="addUser-password"
+                                               name="password">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="roleId" class="col-form-label">Vai trò:</label>
+                                        <select id="roleId" name="roleId" class="form-control">
+                                            <option th:each="role : ${roles}"
+                                                    th:value="${role.id}"
+                                                    th:utext="${role.name}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addUser-description" class="col-form-label">Mô tả:</label>
+                                        <input type="text" required class="form-control" id="addUser-description"
+                                               name="description">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy bỏ</button>
+                                    <button type="submit" class="btn btn-primary">Thêm mới</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="modal" tabindex="-1" role="dialog" id="deleteConfirmPermissionModal">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Modal title</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Bạn chắc chắn xóa người dùng này?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy bỏ</button>
+                                <a href="" class="btn btn-primary" id="deletePermissionRef">Đồng ý</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- Kết thúc bảng phân quyền -->
+
+        </div>
+        <!-- Kết thúc trang -->
+
+        <!-- Footer -->
+        <div th:replace="fragments/footer :: footer"></div>
+        <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+<!-- Logout Modal-->
+
+
+<div th:replace="fragments/sidebar :: sidebar-js"></div>
+<script th:src="@{~/js/common.js}"></script>
+
+<!-- Bootstrap core JavaScript-->
+<!--<script th:src="@{~/js/jquery/jquery.min.js}"></script>-->
+<!--<script th:src="@{~/js/bootstrap/js/bootstrap.bundle.min.js}"></script>-->
+
+<!-- Core plugin JavaScript-->
+<!--<script th:src="@{~/js/jquery-easing/jquery.easing.min.js}"></script>-->
+
+<!-- Custom scripts for all pages-->
+<!--<script th:src="@{~/js/sb-admin-2.min.js}"></script>-->
+<!-- Page level plugins -->
+<script th:src="@{~/js/datatables/jquery.dataTables.min.js}"></script>
+<script th:src="@{~/js/datatables/dataTables.bootstrap4.min.js}"></script>
+
+<!-- Page level custom scripts -->
+<script th:src="@{~/js/demo/datatables-demo.js}"></script>
+</body>
+
+</html>

@@ -13,6 +13,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserStationId implements Serializable {
+
     @Column(name = "user_id")
     private Long userId;
 

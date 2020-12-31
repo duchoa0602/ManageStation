@@ -13,15 +13,17 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class UserStationEntity  implements Serializable {
+public class UserStationEntity implements Serializable {
+
     @EmbeddedId
     private UserStationId id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @MapsId("userId")
     private UserEntity user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @MapsId("stationId")
     private StationEntity station;
+
 }

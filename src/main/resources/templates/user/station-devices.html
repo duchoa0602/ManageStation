@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="fragments/sidebar :: common-css-admin">
+    <meta name="csrf-token" content="{{csrf_token()}}"/>
+
+</head>
+
+<body id="page-top">
+
+<div id="wrapper">
+
+    <div th:replace="fragments/sidebar :: side-bar"></div>
+
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <div id="content">
+
+            <div th:replace="fragments/topbar :: top-bar"></div>
+
+            <div class="container-fluid">
+                <h1 class="h3 mb-2 text-gray-800">Danh sách thiết bị của trạm</h1>
+                <div class="card shadow mb-4">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <div style="margin-bottom: 20px;">
+                                    <button class="btn btn-primary newBtn"
+                                            data-toggle="modal"
+                                            data-target="#addStationModal">
+                                        <i class="fas fa-plus-circle"></i> Thêm mới
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Tên thiết bị</th>
+                                    <th>Đơn vị đo</th>
+                                    <th>Ngưỡng thấp</th>
+                                    <th>Ngưỡng cao</th>
+                                    <th>Hành động</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <th:block th:each="u,i:${listDevices}">
+                                    <tr>
+                                        <td th:text="${i.count}"></td>
+                                        <td th:text="${u.name}"></td>
+                                        <td th:text="${u.unit}"></td>
+                                        <td th:text="${u.lowValue}"></td>
+                                        <td th:text="${u.highValue}"></td>
+                                        <td>
+                                            <a th:href="@{/user/manage-station/{stationId}(stationId=${u.id})}"
+                                               id="btnEditStationRow" name="btnEditStationRow"
+                                               class="btn btn-warning">Sửa</a>
+
+                                            <a th:href="@{/user/manage-station/delete/(stationId=${u.id})}"
+                                               id="btnDeleteStationRow" name="btnDeleteStationRow"
+                                               class="btn btn-danger">Xóa</a>
+                                        </td>
+                                    </tr>
+                                </th:block>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="addStationModal" tabindex="-1" role="dialog"
+                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <form action="#" th:action="@{/user/manage-station/new}" method="post">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Thêm mới trạm quản lý</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label for="name" class="col-form-label">Tên trạm:</label>
+                                        <input type="text" class="form-control" required id="name" name="name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="address" class="col-form-label">Địa chỉ trạm:</label>
+                                        <input type="text" class="form-control" id="address" name="address">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="description" class="col-form-label">Mô tả:</label>
+                                        <input type="text" class="form-control" id="description" name="description">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy bỏ</button>
+                                    <button type="submit" class="btn btn-primary">Thêm mới</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="modal fade" id="editStationModal" tabindex="-1" role="dialog"
+                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <form action="#" th:action="@{/user/manage-station/update}" method="post">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Chỉnh sửa thông tin trạm</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <input type="text" class="form-control" hidden id="idStationEdit" name="stationId">
+                                    <input type="text" class="form-control" hidden id="idUserEdit" name="userId">
+                                    <input type="text" class="form-control" hidden id="UsernameEdit" name="username">
+                                    <div class="form-group">
+                                        <label for="nameEdit" class="col-form-label">Tên trạm:</label>
+                                        <input type="text" class="form-control" required id="nameEdit" name="name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addressEdit" class="col-form-label">Địa chỉ trạm:</label>
+                                        <input type="text" class="form-control" id="addressEdit" name="address">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="descriptionEdit" class="col-form-label">Mô tả:</label>
+                                        <input type="text" class="form-control" id="descriptionEdit" name="description">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy bỏ</button>
+                                    <button type="submit" class="btn btn-primary">Cập nhật</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="modal" tabindex="-1" role="dialog" id="confirmDeleteStationModal">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Xác nhận xóa</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Bạn chắc chắn xóa trạm này?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy bỏ</button>
+                                <a href="" class="btn btn-primary" id="deleteStationRef">Đồng ý</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div th:replace="fragments/footer :: footer"></div>
+
+    </div>
+
+</div>
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+
+<div th:replace="fragments/sidebar :: sidebar-js"></div>
+<script th:src="@{~/js/common.js}"></script>
+
+<script th:src="@{~/js/datatables/jquery.dataTables.min.js}"></script>
+<script th:src="@{~/js/datatables/dataTables.bootstrap4.min.js}"></script>
+
+<script type="text/javascript" src="../static/js/demo/datatables-demo.js"
+        th:src="@{~/js/demo/datatables-demo.js}"></script>
+</body>
+
+</html>

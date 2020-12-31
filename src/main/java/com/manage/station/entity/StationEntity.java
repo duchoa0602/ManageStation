@@ -26,6 +26,9 @@ public class StationEntity implements Serializable {
     @Column(name = "name", columnDefinition = "nvarchar(255)", nullable = false)
     private String name; //tên
 
+    @Column(name = "address", columnDefinition = "nvarchar(255)")
+    private String address;     //Dia chi
+
     @Column(name = "description", columnDefinition = "nvarchar(255)")
     private String description; //mô tả
 
