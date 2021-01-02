@@ -11,6 +11,7 @@
     <title>Quản lý trạm</title>
 
     <!-- Custom fonts for this template-->
+    <link type="text/css" rel="stylesheet" href="TASK3.css" media="all" />
     <link rel="stylesheet" th:href="@{~/css/admin/all.min.css}">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
           rel="stylesheet" type="text/css">
@@ -20,8 +21,6 @@
 
     <!-- Custom styles for this page -->
     <link th:href="@{~/css/dataTables.bootstrap4.min.css}" rel="stylesheet" type="text/css">
-
-
 </head>
 
 <body id="page-top">
@@ -63,16 +62,16 @@
                     <i class="fas fa-fw fa-folder"></i>
                     <span>Quản lý người dùng</span></a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" th:href="@{~/admin/manage-request}">
-                    <i class="fas fa-fw fa-folder"></i>
-                    <span>Quản lý yêu cầu</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" th:href="@{~/admin/report}">
-                    <i class="fas fa-fw fa-folder"></i>
-                    <span>Báo cáo</span></a>
-            </li>
+<!--            <li class="nav-item">-->
+<!--                <a class="nav-link" th:href="@{~/admin/manage-request}">-->
+<!--                    <i class="fas fa-fw fa-folder"></i>-->
+<!--                    <span>Quản lý yêu cầu</span></a>-->
+<!--            </li>-->
+<!--            <li class="nav-item">-->
+<!--                <a class="nav-link" th:href="@{~/admin/report}">-->
+<!--                    <i class="fas fa-fw fa-folder"></i>-->
+<!--                    <span>Báo cáo</span></a>-->
+<!--            </li>-->
         </div>
         <hr class="sidebar-divider">
 
@@ -97,6 +96,11 @@
                     <i class="fas fa-fw fa-folder"></i>
                     <span>Báo cáo</span></a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{~/user/statistic}">
+                    <i class="fas fa-fw fa-folder"></i>
+                    <span>Thống kê</span></a>
+            </li>
             <hr class="sidebar-divider d-none d-md-block">
         </div>
     </ul>
@@ -105,12 +109,20 @@
 <!-- End of Page Wrapper -->
 
 <div th:fragment="sidebar-js">
-    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
-    <script th:src="@{~/js/jquery/jquery.min.js}"></script>
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js}"></script>
+<!--    <script th:src="@{~/js/jquery/jquery.min.js}"></script>-->
     <script th:src="@{~/js/bootstrap/js/bootstrap.bundle.min.js}"></script>
     <script th:src="@{~/js/jquery-easing/jquery.easing.min.js}"></script>
     <script th:src="@{~/js/sb-admin-2.min.js}"></script>
     <script th:src="@{~/js/Chart.min.js}"></script>
+    <script th:src="@{~/js/jquery/jquery.js}"></script>
+    <script th:src="@{~/js/bootstrap.min.js}"></script>
+    <script th:src="@{~/js/highcharts/jquery.min.js}"></script>
+    <script th:src="@{~/js/highcharts/highcharts.js}"></script>
+    <script th:src="@{~/js/highcharts/exporting.js}"></script>
+<!--    <script th:src="@{~/js/highcharts/export-data.js}"></script>-->
+<!--    <script th:src="@{~/js/highcharts/accessibility.js}"></script>-->
+<!--    <script th:src="@{~/js/highcharts/series-label.js}"></script>-->
 </div>
 
 

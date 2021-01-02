@@ -27,6 +27,8 @@ public class UserController {
         this.authenticatorService = authenticatorService;
     }
 
+
+
     @GetMapping("/monitor")
     String manageUser(Model model) {
 
@@ -102,6 +104,7 @@ public class UserController {
         List<DeviceEntity> listStationOfUser = userService.findAllDeviceByStationIdOfUser(stationId);
         model.addAttribute("listDevices", listStationOfUser);
         model.addAttribute("station", stationEntity);
+        model.addAttribute("stationName", stationEntity.getName());
         return "user/station-devices";
     }
     //MANAGE DEVICE START
@@ -112,6 +115,12 @@ public class UserController {
     String report(Model model) {
 
         return "user/report";
+    }
+
+    @GetMapping("/statistic")
+    String statistic(Model model) {
+
+        return "user/test";
     }
 
 }
