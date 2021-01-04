@@ -7,12 +7,12 @@ import com.manage.station.entity.UserStationEntity;
 import com.manage.station.entity.id.UserStationId;
 import com.manage.station.service.UserService;
 import com.manage.station.service.impl.UserAuthenticatorServiceImpl;
+import com.manage.station.web.controller.request.DeviceStationForm;
 import com.manage.station.web.controller.request.UserStationForm;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -62,7 +62,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/manage-station/update", method = RequestMethod.POST)
-    String updateExamination(UserStationForm form) {
+    String updateStation(UserStationForm form) {
         UserStationEntity userStationEntity = UserStationEntity.builder()
                 .id(UserStationId.builder().userId(form.getUserId()).stationId(form.getStationId()).build())
                 .station(StationEntity.builder()
@@ -79,7 +79,7 @@ public class UserController {
         return "redirect:/user/manage-station";
     }
 
-    @RequestMapping(value = "/manage-station/{stationId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/manage-station/station/{stationId}", method = RequestMethod.GET)
     @ResponseBody
     public UserStationEntity findUserStationById(@PathVariable("stationId") Long stationId) {
         String username = authenticatorService.getUsernameLogin();
@@ -87,8 +87,8 @@ public class UserController {
         return userService.findByUserIdAndStationId(userEntity.getId(), stationId);
     }
 
-    @RequestMapping(value = "/manage-station/delete", method = {RequestMethod.DELETE, RequestMethod.GET})
-    public String deleteExamination(Long stationId) {
+    @RequestMapping(value = "/manage-station/station/{stationId}/delete", method = {RequestMethod.DELETE, RequestMethod.GET})
+    public String deleteStation(@PathVariable("stationId") Long stationId) {
         String username = authenticatorService.getUsernameLogin();
         UserEntity userEntity = userService.findUserByUsername(username);
         userService.deleteStationOfUser(userEntity.getId(), stationId);
@@ -96,16 +96,64 @@ public class UserController {
     }
 
     //MANAGE STATION END
-    @RequestMapping(value = "/manage-station/devices/{stationId}", method = RequestMethod.GET)
+
+    //MANAGE DEVICE START
+    @RequestMapping(value = "/manage-station/station/{stationId}/devices", method = RequestMethod.GET)
     public String getAllDeviceOfStationByUser(@PathVariable("stationId") Long stationId, Model model) {
         StationEntity stationEntity = userService.findStationById(stationId);
         List<DeviceEntity> listStationOfUser = userService.findAllDeviceByStationIdOfUser(stationId);
         model.addAttribute("listDevices", listStationOfUser);
         model.addAttribute("station", stationEntity);
+        model.addAttribute("stationId", stationId);
         return "user/station-devices";
     }
-    //MANAGE DEVICE START
 
+    @RequestMapping(value = "/manage-station/station/{stationId}/devices/new", method = RequestMethod.POST)
+    String addNewDeviceStation(@PathVariable("stationId") Long stationId, DeviceStationForm form) {
+        DeviceEntity deviceEntity = DeviceEntity.builder()
+                .id(null)
+                .activeFlag(true)
+                .deleteFlag(false)
+                .name(form.getName().trim())
+                .unit(form.getUnit().trim())
+                .lowValue(form.getLowValue())
+                .highValue(form.getHighValue())
+                .station(StationEntity.builder().id(stationId).build())
+                .build();
+        userService.saveOrUpdateDeviceStation(deviceEntity);
+        return "redirect:/user/manage-station/station/" + stationId + "/devices";
+    }
+
+    @RequestMapping(value = "/manage-station/station/{stationId}/devices/{deviceId}", method = RequestMethod.GET)
+    @ResponseBody
+    public DeviceEntity findDeviceById(@PathVariable("stationId") Long stationId,
+                                       @PathVariable("deviceId") Long deviceId) {
+        return userService.findDeviceById(deviceId);
+    }
+
+    @RequestMapping(value = "/manage-station/station/devices/update", method = RequestMethod.POST)
+    String updateDeviceStation(DeviceStationForm form) {
+        DeviceEntity deviceEntity = DeviceEntity.builder()
+                .id(form.getId())
+                .deleteFlag(true)
+                .activeFlag(false)
+                .name(form.getName().trim())
+                .unit(form.getUnit().trim())
+                .lowValue(form.getLowValue())
+                .highValue(form.getHighValue())
+                .station(StationEntity.builder().id(form.getStationId()).build())
+                .build();
+        userService.saveOrUpdateDeviceStation(deviceEntity);
+        return "redirect:/user/manage-station/station/" + form.getStationId() + "/devices";
+    }
+
+    @RequestMapping(value = "/manage-station/station/{stationId}/devices/{deviceId}/delete",
+            method = {RequestMethod.DELETE, RequestMethod.GET})
+    public String deleteDeviceStation(@PathVariable("stationId") Long stationId,
+                                      @PathVariable("deviceId") Long deviceId) {
+        userService.deleteDeviceById(deviceId);
+        return "redirect:/user/manage-station/station/" + stationId + "/devices";
+    }
     //MANAGE DEVICE END
 
     @GetMapping("/report")

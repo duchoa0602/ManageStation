@@ -31,4 +31,27 @@ $(document).ready(function () {
         $('#confirmDeleteStationModal').modal();
     })
 
+    //EDIT DEVICE STATION MODAL
+    $('#content #btnEditDeviceStationRow').on('click', function (event) {
+        event.preventDefault();
+        let href = $(this).attr('href');
+        $.get(href, function (deviceEntity) {
+            console.log("deviceEntity", deviceEntity)
+            $('#editDeviceStationModal #idStationEdit').val(deviceEntity.station.id);
+            $('#editDeviceStationModal #idDeviceEdit').val(deviceEntity.id);
+            $('#editDeviceStationModal #nameEdit').val(deviceEntity.name);
+            $('#editDeviceStationModal #unitEdit').val(deviceEntity.unit);
+            $('#editDeviceStationModal #lowValueEdit').val(deviceEntity.lowValue);
+            $('#editDeviceStationModal #highValueEdit').val(deviceEntity.highValue);
+        });
+        $('#editDeviceStationModal').modal();
+    });
+
+    $('#content #btnDeleteDeviceStationRow').on('click', function (event) {
+        event.preventDefault();
+        let href = $(this).attr('href');
+        $('#confirmDeleteDeviceStationModal #deleteDeviceStationRef').attr('href', href);
+        $('#confirmDeleteDeviceStationModal').modal();
+    })
+
 });

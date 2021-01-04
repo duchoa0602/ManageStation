@@ -106,4 +106,24 @@ public class UserServiceImpl implements UserService {
         return stationRepository.findById(stationId)
                 .orElseThrow(() -> new IllegalArgumentException("Not found by id"));
     }
+
+    @Override
+    public void saveOrUpdateDeviceStation(DeviceEntity deviceEntity) {
+        StationEntity stationEntity = stationRepository.findById(deviceEntity.getStation().getId())
+                .orElseThrow(() -> new IllegalArgumentException("Not found by id"));
+        deviceEntity.setStation(stationEntity);
+
+        deviceRepository.save(deviceEntity);
+    }
+
+    @Override
+    public DeviceEntity findDeviceById(Long deviceId) {
+        return deviceRepository.findById(deviceId)
+                .orElseThrow(() -> new IllegalArgumentException("Not found by id"));
+    }
+
+    @Override
+    public void deleteDeviceById(Long deviceId) {
+        deviceRepository.deleteById(deviceId);
+    }
 }

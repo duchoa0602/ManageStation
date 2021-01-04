@@ -25,4 +25,10 @@ public interface UserService {
 
     StationEntity findStationById(Long stationId);
 
+    void saveOrUpdateDeviceStation(DeviceEntity deviceEntity);
+
+    DeviceEntity findDeviceById(Long deviceId);
+
+    void deleteDeviceById(Long deviceId);
+
 }
