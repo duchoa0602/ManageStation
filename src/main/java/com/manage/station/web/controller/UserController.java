@@ -12,7 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+import javax.servlet.http.HttpServletRequest;
+
 import java.util.List;
 
 @Controller
@@ -30,8 +31,7 @@ public class UserController {
 
 
     @GetMapping("/monitor")
-    String manageUser(Model model) {
-
+    String manageUser(HttpServletRequest httpRequest, Model model) {
         return "user/monitor";
     }
 
