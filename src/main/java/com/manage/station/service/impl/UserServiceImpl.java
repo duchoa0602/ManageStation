@@ -9,6 +9,7 @@ import com.manage.station.utils.Const;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.List;
 
 @Service
@@ -21,6 +22,7 @@ public class UserServiceImpl implements UserService {
     private final StationRepository stationRepository;
     private final UserStationRepository userStationRepository;
     private final DeviceRepository deviceRepository;
+    private final ValueRepository valueRepository;
 
     public UserServiceImpl(PasswordEncoder passwordEncoder,
                            UserRepository userRepository,
@@ -28,7 +30,7 @@ public class UserServiceImpl implements UserService {
                            UserRoleRepository userRoleRepository,
                            StationRepository stationRepository,
                            UserStationRepository userStationRepository,
-                           DeviceRepository deviceRepository) {
+                           DeviceRepository deviceRepository, ValueRepository valueRepository) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
@@ -36,6 +38,7 @@ public class UserServiceImpl implements UserService {
         this.stationRepository = stationRepository;
         this.userStationRepository = userStationRepository;
         this.deviceRepository = deviceRepository;
+        this.valueRepository = valueRepository;
     }
 
     @Override
@@ -105,5 +108,50 @@ public class UserServiceImpl implements UserService {
     public StationEntity findStationById(Long stationId) {
         return stationRepository.findById(stationId)
                 .orElseThrow(() -> new IllegalArgumentException("Not found by id"));
+    }
+
+    @Override
+    public void saveOrUpdateDeviceStation(DeviceEntity deviceEntity) {
+        StationEntity stationEntity = stationRepository.findById(deviceEntity.getStation().getId())
+                .orElseThrow(() -> new IllegalArgumentException("Not found by id"));
+        deviceEntity.setStation(stationEntity);
+
+        deviceRepository.save(deviceEntity);
+    }
+
+    @Override
+    public DeviceEntity findDeviceById(Long deviceId) {
+        return deviceRepository.findById(deviceId)
+                .orElseThrow(() -> new IllegalArgumentException("Not found by id"));
+    }
+
+    @Override
+    public void deleteDeviceById(Long deviceId) {
+        deviceRepository.deleteById(deviceId);
+    }
+
+    @Override
+    public List<ValueEntity> getValueByDeviceIdAndTime(Long deviceId, Date fromDate, Date toDate) {
+        return valueRepository.getValueByDeviceIdAndTime(deviceId, fromDate, toDate);
+    }
+
+    @Override
+    public List<ValueEntity> getValueWarningByDeviceIdAndTime(Long deviceId, Date fromDate, Date toDate) {
+        return valueRepository.getValueWarning(deviceId, fromDate, toDate);
+    }
+
+    @Override
+    public void saveValue(ValueEntity valueEntity) {
+        try {
+            valueEntity = valueRepository.save(valueEntity);
+            System.out.println("Save value: " + valueEntity.toString());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public DeviceEntity getDeviceById(Long id) {
+        return deviceRepository.getOne(id);
     }
 }

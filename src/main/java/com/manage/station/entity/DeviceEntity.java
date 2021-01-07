@@ -21,9 +21,9 @@ public class DeviceEntity implements Serializable {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("stationId")
-    private StationEntity station; //trạm đo
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "station_id", referencedColumnName = "id", nullable = false)
+    private StationEntity station;
 
     @Column(name = "name", columnDefinition = "nvarchar(255)", nullable = false)
     private String name; //tên

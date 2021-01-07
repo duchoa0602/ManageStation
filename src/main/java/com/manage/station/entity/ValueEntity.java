@@ -22,8 +22,8 @@ public class ValueEntity implements Serializable {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("deviceId")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "device_id", referencedColumnName = "id", nullable = false)
     private DeviceEntity device; //thiết bị đo
 
     @Column(name = "val", nullable = false)
@@ -31,4 +31,14 @@ public class ValueEntity implements Serializable {
 
     @Column(name = "created_date", nullable = false)
     private Date createdDate;
+
+    @Override
+    public String toString() {
+        return "{" +
+                "id=" + id +
+                ", device=" + device +
+                ", val=" + val +
+                ", createdDate=" + createdDate +
+                '}';
+    }
 }

@@ -53,15 +53,15 @@
                                         <td th:text="${u.station.address}"></td>
                                         <td th:text="${u.station.description}"></td>
                                         <td>
-                                            <a th:href="@{/user/manage-station/{stationId}(stationId=${u.id.stationId})}"
+                                            <a th:href="@{/user/manage-station/station/{stationId}(stationId=${u.id.stationId})}"
                                                id="btnEditStationRow" name="btnEditStationRow"
                                                class="btn btn-warning">Sửa</a>
 
-                                            <a th:href="@{/user/manage-station/delete/(stationId=${u.id.stationId})}"
+                                            <a th:href="@{/user/manage-station/station/{stationId}/delete(stationId=${u.id.stationId})}"
                                                id="btnDeleteStationRow" name="btnDeleteStationRow"
                                                class="btn btn-danger">Xóa</a>
 
-                                            <a th:href="@{/user/manage-station/devices/{stationId}(stationId=${u.id.stationId})}"
+                                            <a th:href="@{/user/manage-station/station/{stationId}/devices(stationId=${u.id.stationId})}"
                                                id="btnManageDeviceStationRow" name="btnManageDeviceStationRow"
                                                class="btn btn-primary">QL thiết bị</a>
                                         </td>

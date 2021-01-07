@@ -19,7 +19,7 @@
             <div th:replace="fragments/topbar :: top-bar"></div>
 
             <div class="container-fluid">
-                <h1 class="h3 mb-2 text-gray-800" > Danh sách thiết bị của <b>[[${stationName}]]</b></h1>
+                <h1 class="h3 mb-2 text-gray-800" th:text="'Danh sách thiết bị của trạm ' + ${station.name}"/>
                 <div class="card shadow mb-4">
                     <div class="card-body">
                         <div class="row">
@@ -27,7 +27,7 @@
                                 <div style="margin-bottom: 20px;">
                                     <button class="btn btn-primary newBtn"
                                             data-toggle="modal"
-                                            data-target="#addStationModal">
+                                            data-target="#addDeviceStationModal">
                                         <i class="fas fa-plus-circle"></i> Thêm mới
                                     </button>
                                 </div>
@@ -55,12 +55,12 @@
                                         <td th:text="${u.lowValue}"></td>
                                         <td th:text="${u.highValue}"></td>
                                         <td>
-                                            <a th:href="@{/user/manage-station/{stationId}(stationId=${u.id})}"
-                                               id="btnEditStationRow" name="btnEditStationRow"
+                                            <a th:href="@{/user/manage-station/station/{stationId}/devices/{deviceId}(stationId=${u.station.id}, deviceId=${u.id})}"
+                                               id="btnEditDeviceStationRow" name="btnEditDeviceStationRow"
                                                class="btn btn-warning">Sửa</a>
 
-                                            <a th:href="@{/user/manage-station/delete/(stationId=${u.id})}"
-                                               id="btnDeleteStationRow" name="btnDeleteStationRow"
+                                            <a th:href="@{/user/manage-station/station/{stationId}/devices/{deviceId}/delete(stationId=${u.station.id}, deviceId=${u.id})}"
+                                               id="btnDeleteDeviceStationRow" name="btnDeleteDeviceStationRow"
                                                class="btn btn-danger">Xóa</a>
                                         </td>
                                     </tr>
@@ -71,29 +71,36 @@
                     </div>
                 </div>
 
-                <div class="modal fade" id="addStationModal" tabindex="-1" role="dialog"
+                <div class="modal fade" id="addDeviceStationModal" tabindex="-1" role="dialog"
                      aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <form action="#" th:action="@{/user/manage-station/new}" method="post">
+                    <form action="#"
+                          th:action="@{/user/manage-station/station/{stationId}/devices/new(stationId=${stationId})}"
+                          method="post">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Thêm mới trạm quản lý</h5>
+                                    <h5 class="modal-title" id="exampleModalLabel"
+                                        th:text="'Thêm mới thiết bị cho trạm ' + ${station.name}"/>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
                                 <div class="modal-body">
                                     <div class="form-group">
-                                        <label for="name" class="col-form-label">Tên trạm:</label>
+                                        <label for="name" class="col-form-label">Tên thiết bị:</label>
                                         <input type="text" class="form-control" required id="name" name="name">
                                     </div>
                                     <div class="form-group">
-                                        <label for="address" class="col-form-label">Địa chỉ trạm:</label>
-                                        <input type="text" class="form-control" id="address" name="address">
+                                        <label for="unit" class="col-form-label">Đơn vị đo:</label>
+                                        <input type="text" class="form-control" id="unit" name="unit">
                                     </div>
                                     <div class="form-group">
-                                        <label for="description" class="col-form-label">Mô tả:</label>
-                                        <input type="text" class="form-control" id="description" name="description">
+                                        <label for="lowValue" class="col-form-label">Ngưỡng thấp:</label>
+                                        <input type="text" class="form-control" id="lowValue" name="lowValue">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="highValue" class="col-form-label">Ngưỡng cao:</label>
+                                        <input type="text" class="form-control" id="highValue" name="highValue">
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -105,32 +112,38 @@
                     </form>
                 </div>
 
-                <div class="modal fade" id="editStationModal" tabindex="-1" role="dialog"
-                     aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <form action="#" th:action="@{/user/manage-station/update}" method="post">
+                <div class="modal fade" id="editDeviceStationModal" tabindex="-1" role="dialog"
+                     aria-labelledby="exampleEditDeviceModalLabel" aria-hidden="true">
+                    <form action="#"
+                          th:action="@{/user/manage-station/station/devices/update}"
+                          method="post">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title">Chỉnh sửa thông tin trạm</h5>
+                                    <h5 class="modal-title" id="exampleEditDeviceModalLabel"
+                                        th:text="'Chỉnh sửa thông tin thiết bị cho trạm ' + ${station.name}"/>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
                                 <div class="modal-body">
                                     <input type="text" class="form-control" hidden id="idStationEdit" name="stationId">
-                                    <input type="text" class="form-control" hidden id="idUserEdit" name="userId">
-                                    <input type="text" class="form-control" hidden id="UsernameEdit" name="username">
+                                    <input type="text" class="form-control" hidden id="idDeviceEdit" name="id">
                                     <div class="form-group">
-                                        <label for="nameEdit" class="col-form-label">Tên trạm:</label>
+                                        <label for="name" class="col-form-label">Tên thiết bị:</label>
                                         <input type="text" class="form-control" required id="nameEdit" name="name">
                                     </div>
                                     <div class="form-group">
-                                        <label for="addressEdit" class="col-form-label">Địa chỉ trạm:</label>
-                                        <input type="text" class="form-control" id="addressEdit" name="address">
+                                        <label for="unit" class="col-form-label">Đơn vị đo:</label>
+                                        <input type="text" class="form-control" id="unitEdit" name="unit">
                                     </div>
                                     <div class="form-group">
-                                        <label for="descriptionEdit" class="col-form-label">Mô tả:</label>
-                                        <input type="text" class="form-control" id="descriptionEdit" name="description">
+                                        <label for="lowValue" class="col-form-label">Ngưỡng thấp:</label>
+                                        <input type="text" class="form-control" id="lowValueEdit" name="lowValue">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="highValue" class="col-form-label">Ngưỡng cao:</label>
+                                        <input type="text" class="form-control" id="highValueEdit" name="highValue">
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -142,7 +155,7 @@
                     </form>
                 </div>
 
-                <div class="modal" tabindex="-1" role="dialog" id="confirmDeleteStationModal">
+                <div class="modal" tabindex="-1" role="dialog" id="confirmDeleteDeviceStationModal">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -152,11 +165,11 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <p>Bạn chắc chắn xóa trạm này?</p>
+                                <p>Bạn chắc chắn xóa thiết bị của trạm này?</p>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy bỏ</button>
-                                <a href="" class="btn btn-primary" id="deleteStationRef">Đồng ý</a>
+                                <a href="" class="btn btn-primary" id="deleteDeviceStationRef">Đồng ý</a>
                             </div>
                         </div>
                     </div>

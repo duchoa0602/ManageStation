@@ -1,10 +1,8 @@
 package com.manage.station.service;
 
-import com.manage.station.entity.DeviceEntity;
-import com.manage.station.entity.StationEntity;
-import com.manage.station.entity.UserEntity;
-import com.manage.station.entity.UserStationEntity;
+import com.manage.station.entity.*;
 
+import java.sql.Date;
 import java.util.List;
 
 public interface UserService {
@@ -25,4 +23,17 @@ public interface UserService {
 
     StationEntity findStationById(Long stationId);
 
+    void saveOrUpdateDeviceStation(DeviceEntity deviceEntity);
+
+    DeviceEntity findDeviceById(Long deviceId);
+
+    void deleteDeviceById(Long deviceId);
+
+    List<ValueEntity> getValueByDeviceIdAndTime(Long deviceId, Date fromDate, Date toDate);
+
+    List<ValueEntity> getValueWarningByDeviceIdAndTime(Long deviceId, Date fromDate, Date toDate);
+
+    void saveValue(ValueEntity valueEntity);
+
+    DeviceEntity getDeviceById(Long deviceId);
 }
